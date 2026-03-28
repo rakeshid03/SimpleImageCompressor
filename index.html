@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Image Compressor</title>
+  <meta name="description" content="Compress JPEG, PNG, WebP, GIF, and SVG images instantly in your browser—fast, secure, and completely private. No uploads, no waiting.">
+  <!-- Custom stylesheet & font family -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Background -->
+  <div class="bg-pattern">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  
+  <!-- Header -->
+  <header>
+    <div class="badge">
+      <div class="badge-dot"></div>
+      <span>Image Compression Tool</span>
+      <div class="badge-dot"></div>
+    </div>
+    <h1>Simple Image Compressor</h1>
+    <p class="subtitle">
+      Compress your images directly in your browser. Fast, secure, and completely private.
+    </p>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+    <div class="card">
+      <!-- Upload Zone -->
+      <div id="uploadZone" class="upload-zone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+        <h3 class="upload-title">Select a file to compress</h3>
+        <p class="upload-subtitle">Drag and drop your file here or click to browse</p>
+        <button class="select-btn" onclick="document.getElementById('fileInput').click()">Select File</button>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      </div>
+      
+      <!-- File Info Section -->
+      <div id="fileSection" class="hidden">
+        <!-- File Card -->
+        <div class="file-card">
+          <div class="file-info">
+            <div class="file-icon" id="fileIcon">📄</div>
+            <div class="file-details">
+              <h3 id="fileName">file.jpg</h3>
+              <p id="fileSize">0 KB • JPG</p>
+            </div>
+          </div>
+          <button class="clear-btn" onclick="clearFile()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <!-- Compression Panel -->
+        <div class="compression-panel">
+          <div class="compression-header">
+            <div class="compression-label">
+              <h3>Compression Level</h3>
+              <p id="compressionLabel">Balanced (Good for Web)</p>
+            </div>
+            <div class="compression-value" id="compressionValue">50%</div>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="compressionSlider" min="0" max="100" value="50">
+            <div class="slider-labels">
+              <span>High Quality</span>
+              <span class="hidden-mobile">Balanced</span>
+              <span>Max Compression</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Compress Button -->
+        <button class="compress-btn" id="compressBtn" onclick="compressFile()">
+          <span>Compress File</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Results Section -->
+      <div id="resultsSection" class="hidden">
+        <div class="results-card">
+          <div class="results-header">
+            <div class="success-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="results-title">Compression Successful!</h3>
+          </div>
+          
+          <div class="results-grid">
+            <div class="stats-column">
+              <div class="stat-card">
+                <span class="stat-label">Original Size</span>
+                <span class="stat-value" id="originalSize">0 KB</span>
+              </div>
+              <div class="stat-card highlight">
+                <span class="stat-label">New Size</span>
+                <span class="stat-value large" id="newSize">0 KB</span>
+              </div>
+              <div class="savings-card">
+                <span class="stat-label">Space Saved</span>
+                <span class="savings-value" id="savedPercent">-0%</span>
+              </div>
+            </div>
+            <div class="preview-card" id="previewCard">
+              <div class="preview-placeholder">
+                <div style="font-size: 3rem;">📄</div>
+                <p style="font-size: 0.75rem; margin-top: 0.5rem;">Preview not available</p>
+              </div>
+            </div>
+          </div>
+          <a id="downloadBtn" class="download-btn" download>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download</span>
+            <span id="downloadSize" style="opacity: 0.8; font-size: 0.780rem; font-weight: 500;">(0 KB)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Simple Image Compressor</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+
+                                                    </html>
