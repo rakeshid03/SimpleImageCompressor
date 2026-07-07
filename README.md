@@ -1,6 +1,7 @@
 # 🖼️ Simple Image Compressor
 
-A fast, lightweight, and privacy-focused image compressor that works **entirely in your browser**.  
+A fast, lightweight, and privacy-focused image compressor that works **entirely in your browser**.  [`▶️ OPEN NOW`](https://rakeshid03.github.io/SimpleImageCompressor/)
+
 No uploads. No servers. No data tracking.
 
 
